@@ -4,7 +4,12 @@ import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 
 export const config = {
-  providers: [Spotify],
+  providers: [
+    Spotify({
+      authorization:
+        "https://accounts.spotify.com/authorize?scope=user-read-email%20playlist-read-private%20playlist-read-collaborative%20user-follow-read%20user-library-read%20user-top-read",
+    }),
+  ],
   session: {
     strategy: "jwt",
   },

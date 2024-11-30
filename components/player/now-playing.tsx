@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -10,10 +9,9 @@ import {
   VolumeX,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
-interface NowPlayingProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function NowPlaying({ className }: NowPlayingProps) {
+export function NowPlaying() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -58,20 +56,18 @@ export function NowPlaying({ className }: NowPlayingProps) {
   };
 
   return (
-    <div
-      className={cn(
-        "flex items-center justify-between px-4 py-2 bg-background border-t",
-        className
-      )}>
+    <div className="flex items-center justify-between px-4 py-2 bg-background border-t">
       <div className="flex items-center space-x-4">
-        <img
-          src="/album-cover.jpg"
+        <Image
+          src="/images/ghar-album.jpeg"
           alt="Album cover"
-          className="w-12 h-12 rounded"
+          width={48}
+          height={48}
+          className="w-12 h-12 rounded aspect-square object-cover"
         />
         <div>
-          <h3 className="text-sm font-medium">Song Title</h3>
-          <p className="text-xs text-muted-foreground">Artist Name</p>
+          <h3 className="text-sm font-medium">Ghar</h3>
+          <p className="text-xs text-muted-foreground">Bharat Chauhan</p>
         </div>
       </div>
       <div className="flex flex-col items-center space-y-2 flex-1 max-w-xl">
@@ -116,13 +112,13 @@ export function NowPlaying({ className }: NowPlayingProps) {
           value={[volume]}
           max={1}
           step={0.01}
-          onValueChange={(value: any) => setVolume(value[0])}
+          onValueChange={(value) => setVolume(value[0])}
           className="w-24"
         />
       </div>
       <audio
         ref={audioRef}
-        src="/path-to-your-audio-file.mp3"
+        src="/music/ghar.mp3"
         onTimeUpdate={handleTimeUpdate}
       />
     </div>

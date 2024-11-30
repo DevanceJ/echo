@@ -3,10 +3,11 @@ import { Header } from "@/components/console/header";
 import { Album as AlbumComponent } from "@/components/console/album";
 import { PlaylistGrid } from "@/components/console/playlist";
 import { useQuery } from "@tanstack/react-query";
-import { Album, UserPlaylists } from "@/types";
+import { Album, Artist, UserPlaylists } from "@/types";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { NowPlaying } from "@/components/player/now-playing";
+import { useEcho } from "@/hooks/useStore";
+import { useEffect } from "react";
 export default function Home() {
   const { data: session, status } = useSession({
     required: true,
@@ -14,7 +15,30 @@ export default function Home() {
       redirect("/");
     },
   });
+  const { setLatestSongs } = useEcho();
   console.log("from frontend", session);
+  const {
+    data: recentlyPlayed,
+    error: recentlyPlayedError,
+    isLoading: recentlyPlayedLoading,
+  } = useQuery({
+    queryKey: ["recently-played"],
+    queryFn: async () => {
+      if (!session?.access_token) {
+        throw new Error("No access token available");
+      }
+      const res = await fetch("https://api.spotify.com/v1/me/top/tracks", {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch recently played");
+      }
+      return res.json();
+    },
+    enabled: !!session?.access_token,
+  });
   const {
     data: userPlaylist,
     isLoading: playlistLoading,
@@ -63,7 +87,17 @@ export default function Home() {
     enabled: !!session?.access_token,
   });
 
-  if (status === "loading" || playlistLoading || newReleasesLoading) {
+  useEffect(() => {
+    if (recentlyPlayed?.items) {
+      setLatestSongs(recentlyPlayed.items);
+    }
+  }, [recentlyPlayed, setLatestSongs]);
+  if (
+    status === "loading" ||
+    playlistLoading ||
+    newReleasesLoading ||
+    recentlyPlayedLoading
+  ) {
     return (
       <div className="flex justify-center items-center h-screen">
         Loading...
@@ -72,24 +106,27 @@ export default function Home() {
   }
 
   // Error handling
-  if (playlistError || newReleasesError) {
+  if (playlistError || newReleasesError || recentlyPlayedError) {
     redirect("/");
   }
+
   const newReleasesPlaylists = newReleases.albums.items.map((album: Album) => ({
     name: album.name,
     cover: album.images[0]?.url,
-    artists: album.artists.map((artist: any) => artist.name).join(", "),
+    artists: album.artists.map((artist: Artist) => artist.name).join(", "),
     url: album.external_urls.spotify,
   }));
 
-  const userPlaylists = userPlaylist.items.map((playlist: UserPlaylists) => ({
-    name: playlist.name,
-    cover: playlist.images[0]?.url,
-    artists: playlist.public
-      ? `By ${playlist.owner.display_name}`
-      : "Your Playlist",
-    url: playlist.external_urls.spotify,
-  }));
+  const userPlaylists = userPlaylist.items
+    .filter((playlist: UserPlaylists | null) => playlist !== null)
+    .map((playlist: UserPlaylists) => ({
+      name: playlist?.name,
+      cover: playlist.images[0]?.url || "/default-cover.jpg",
+      artists: playlist.public
+        ? `By ${playlist.owner.display_name}`
+        : "Your Playlist",
+      url: playlist.external_urls.spotify,
+    }));
 
   return (
     <div className="container mx-auto pb-24">

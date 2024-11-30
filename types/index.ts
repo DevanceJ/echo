@@ -2,7 +2,7 @@ type ExternalUrls = {
   spotify: string;
 };
 
-type Artist = {
+export type Artist = {
   external_urls: ExternalUrls;
   href: string;
   id: string;

@@ -1,8 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bell, ChevronDown } from "lucide-react";
 import Image from "next/image";
-import drake from "@/public/images/drake.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,18 +13,30 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEcho } from "@/hooks/useStore";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export function QueueSidebar() {
+  const { latestSongs } = useEcho();
+  const { data: session } = useSession();
+  const [showAll, setShowAll] = useState(false);
+  const displayedSongs = showAll ? latestSongs : latestSongs.slice(0, 8);
   return (
     <div className="hidden lg:flex flex-col h-full w-72 bg-sidebar">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center space-x-3">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage
+              src={session?.user?.image ?? "github.com/shadcn.png"}
+              alt="@shadcn"
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="text-sm font-semibold">Timothy Luca</h2>
+            <h2 className="text-sm font-semibold">
+              {session?.user?.name ?? "Shad"}
+            </h2>
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -47,52 +59,33 @@ export function QueueSidebar() {
 
       <ScrollArea className="flex-1">
         <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-8">
             <h3 className="text-sm font-semibold">Recently Played</h3>
-            <button className="text-xs text-muted-foreground">See all</button>
+            {latestSongs.length > 8 && (
+              <button
+                onClick={() => setShowAll((prev) => !prev)}
+                className="text-xs">
+                {showAll ? "Show less" : "See all"}
+              </button>
+            )}
           </div>
           <div className="mt-3 space-y-3">
-            {["Savage", "can't look back", "Love Again"].map((song, i) => (
-              <div key={i} className="flex items-center space-x-3">
+            {displayedSongs.map((song, i) => (
+              <div
+                onClick={() => {
+                  window.open(song.external_urls.spotify, "_blank");
+                }}
+                key={i}
+                className="flex items-center space-x-3 cursor-pointer">
                 <Image
-                  src={drake} // Replace with album cover source
-                  alt={song}
+                  src={song.album.images[0].url} // Replace with album cover source
+                  alt={song.name}
                   height={40}
                   width={40}
                   className="rounded-md object-cover"
                 />
                 <div className="flex-1">
-                  <p className="text-sm truncate">{song}</p>
-                  <p className="text-xs text-muted-foreground">4 min ago</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold">My Playlist</h3>
-            <button className="text-xs text-muted-foreground">See all</button>
-          </div>
-          <div className="mt-3 space-y-3">
-            {[
-              { name: "land of rising sun", duration: "2 hr 43 min" },
-              { name: "burning memories", duration: "1 hr 4 min" },
-              { name: "dream 127 U", duration: "1 hr 56 min" },
-            ].map((playlist, i) => (
-              <div key={i} className="flex items-center space-x-3">
-                <Image
-                  src={drake} // Replace with playlist cover source
-                  alt={playlist.name}
-                  height={40}
-                  width={40}
-                  className="rounded-md object-cover"
-                />
-                <div className="flex-1">
-                  <p className="text-sm truncate">{playlist.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {playlist.duration}
-                  </p>
+                  <p className="text-sm truncate">{song.name}</p>
                 </div>
               </div>
             ))}
