@@ -8,10 +8,10 @@ export function SignIn() {
         "use server";
         await signIn("spotify", { redirectTo: "/echo" });
       }}
-      className="w-full flex justify-center">
-      <Button className="bg-green-600 text-white hover:bg-green-700">
+      className="w-full flex justify-center text-white">
+      <Button className="w-2/3 text-base">
         <Image src="/images/spotify.png" alt="Spotify" width={24} height={24} />
-        Sign in with Spotify
+        Continue with Spotify
       </Button>
     </form>
   );
