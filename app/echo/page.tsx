@@ -6,8 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Album, Artist, UserPlaylists } from "@/types";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEcho } from "@/hooks/useStore";
-import { useEffect } from "react";
+import { PlaylistGridSkeleton } from "@/components/console/playlistSkeleton";
 export default function Home() {
   const { data: session, status } = useSession({
     required: true,
@@ -15,30 +14,7 @@ export default function Home() {
       redirect("/");
     },
   });
-  const { setLatestSongs } = useEcho();
   console.log("from frontend", session);
-  const {
-    data: recentlyPlayed,
-    error: recentlyPlayedError,
-    isLoading: recentlyPlayedLoading,
-  } = useQuery({
-    queryKey: ["recently-played"],
-    queryFn: async () => {
-      if (!session?.access_token) {
-        throw new Error("No access token available");
-      }
-      const res = await fetch("https://api.spotify.com/v1/me/top/tracks", {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to fetch recently played");
-      }
-      return res.json();
-    },
-    enabled: !!session?.access_token,
-  });
   const {
     data: userPlaylist,
     isLoading: playlistLoading,
@@ -87,26 +63,20 @@ export default function Home() {
     enabled: !!session?.access_token,
   });
 
-  useEffect(() => {
-    if (recentlyPlayed?.items) {
-      setLatestSongs(recentlyPlayed.items);
-    }
-  }, [recentlyPlayed, setLatestSongs]);
-  if (
-    status === "loading" ||
-    playlistLoading ||
-    newReleasesLoading ||
-    recentlyPlayedLoading
-  ) {
+  if (status === "loading" || playlistLoading || newReleasesLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
+      <div className="container mx-auto pb-24">
+        <Header />
+        <div className="flex flex-col items-center justify-center px-4 space-y-6">
+          <AlbumComponent />
+          <PlaylistGridSkeleton />
+        </div>
       </div>
     );
   }
 
   // Error handling
-  if (playlistError || newReleasesError || recentlyPlayedError) {
+  if (playlistError || newReleasesError) {
     redirect("/");
   }
 

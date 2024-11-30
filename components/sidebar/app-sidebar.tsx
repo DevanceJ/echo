@@ -18,7 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/multisidebar";
 import Link from "next/link";
 
 // Features.
@@ -59,7 +59,7 @@ const library = [
 ];
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar side="left">
       <SidebarHeader className="my-6 pl-4 text-2xl font-medium">
         Echo
       </SidebarHeader>
@@ -70,7 +70,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {features.map((feature) => (
                 <SidebarMenuItem key={feature.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild side="left">
                     <Link href={feature.url}>
                       <feature.icon />
                       <span>{feature.title}</span>
@@ -99,7 +99,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarRail />
+      <SidebarRail side="left" />
     </Sidebar>
   );
 }

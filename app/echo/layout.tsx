@@ -1,8 +1,27 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { MultiSidebarProvider } from "@/components/ui/multisidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { QueueSidebar } from "@/components/sidebar/queue-sidebar";
 import { PlayerWrapper } from "@/components/player/player-wrapper";
+import { QueueSidebar } from "@/components/sidebar/queue-sidebar";
 
+// export default function Layout({
+//   children,
+// }: Readonly<{
+//   children: React.ReactNode;
+// }>) {
+//   return (
+//     <main className="relative flex h-screen">
+//       <SidebarProvider>
+//         <AppSidebar />
+//         <div className="flex-1 overflow-auto">
+//           {children}
+//           <PlayerWrapper />
+//         </div>
+//         <Check />
+//       </SidebarProvider>
+//       {/* <QueueSidebar /> */}
+//     </main>
+//   );
+// }
 export default function Layout({
   children,
 }: Readonly<{
@@ -10,14 +29,14 @@ export default function Layout({
 }>) {
   return (
     <main className="relative flex h-screen">
-      <SidebarProvider>
+      <MultiSidebarProvider>
         <AppSidebar />
         <div className="flex-1 overflow-auto">
           {children}
           <PlayerWrapper />
         </div>
-      </SidebarProvider>
-      <QueueSidebar />
+        <QueueSidebar />
+      </MultiSidebarProvider>
     </main>
   );
 }
