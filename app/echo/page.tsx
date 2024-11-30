@@ -14,7 +14,6 @@ export default function Home() {
       redirect("/");
     },
   });
-  console.log("from frontend", session);
   const {
     data: userPlaylist,
     isLoading: playlistLoading,
@@ -103,7 +102,10 @@ export default function Home() {
       <Header />
       <div className="flex flex-col items-center justify-center px-4 space-y-6">
         <AlbumComponent />
-        <PlaylistGrid title="New Releases" playlists={newReleasesPlaylists} />
+        <PlaylistGrid
+          username={session?.user?.name}
+          playlists={newReleasesPlaylists}
+        />
         <PlaylistGrid title="Your Playlists" playlists={userPlaylists} />
       </div>
     </div>

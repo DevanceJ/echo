@@ -16,9 +16,15 @@ import { NavUser } from "./internal/nav-user";
 import { useSession } from "next-auth/react";
 import { NavSong } from "./internal/nav-song";
 import React from "react";
+import { redirect } from "next/navigation";
 
 export function QueueSidebar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/");
+    },
+  });
   const {
     data: recentlyPlayed,
     error: recentlyPlayedError,
@@ -41,7 +47,7 @@ export function QueueSidebar() {
     },
     enabled: !!session?.access_token,
   });
-  if (!session || recentlyPlayedLoading || recentlyPlayedError) {
+  if (status === "loading" || recentlyPlayedLoading || recentlyPlayedError) {
     return (
       <Sidebar side="right">
         <SidebarHeader>
@@ -73,7 +79,7 @@ export function QueueSidebar() {
       <SidebarHeader>
         <NavUser user={session?.user} />
       </SidebarHeader>
-      <SidebarContent className="mt-4">
+      <SidebarContent className="mt-4 pb-24">
         <NavSong recentlyPlayed={recentlyPlayed.items} />
       </SidebarContent>
       <SidebarRail side="right" />

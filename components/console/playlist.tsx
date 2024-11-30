@@ -13,11 +13,16 @@ type Playlist = {
 };
 
 type PlaylistGridProps = {
-  title: string;
+  title?: string;
+  username?: string | undefined | null;
   playlists: Playlist[];
 };
 
-export function PlaylistGrid({ title, playlists }: PlaylistGridProps) {
+export function PlaylistGrid({
+  title,
+  username,
+  playlists,
+}: PlaylistGridProps) {
   const [showAll, setShowAll] = useState(false);
 
   const visiblePlaylists = showAll ? playlists : playlists.slice(0, 5);
@@ -25,7 +30,8 @@ export function PlaylistGrid({ title, playlists }: PlaylistGridProps) {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold">{title}</h2>
+        {title && <h1 className="text-lg font-bold">{title}</h1>}
+        {username && <h2 className="text-3xl font-bold">Hello {username},</h2>}
         {playlists.length > 5 && (
           <button
             onClick={() => setShowAll(!showAll)}
@@ -35,7 +41,7 @@ export function PlaylistGrid({ title, playlists }: PlaylistGridProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {visiblePlaylists.map((playlist, index) => (
           <Card
             onClick={() => window.open(playlist.url, "_blank")}
@@ -54,7 +60,7 @@ export function PlaylistGrid({ title, playlists }: PlaylistGridProps) {
                 className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <Play className="text-blue-500 h-12 w-12 animate-bounce-slow" />
+                <Play className="text-white h-12 w-12 animate-bounce-slow" />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold truncate">{playlist.name}</h3>

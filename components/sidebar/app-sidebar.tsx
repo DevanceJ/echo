@@ -70,7 +70,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {features.map((feature) => (
                 <SidebarMenuItem key={feature.title}>
-                  <SidebarMenuButton asChild side="left">
+                  <SidebarMenuButton
+                    asChild
+                    side="left"
+                    className="data-[active=true]:bg-transparent data-[active=true]:text-blue-600"
+                    isActive={feature.title === "Home"}>
                     <Link href={feature.url}>
                       <feature.icon />
                       <span>{feature.title}</span>

@@ -57,7 +57,8 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* --background: 222.2 84% 4.9%; */
+    --background: 240 5.9% 10%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -81,7 +82,8 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    /* --sidebar-background: 240 5.9% 10%; */
+    --sidebar-background: 222.2 84% 4.9%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -97,7 +99,7 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#212121] text-foreground;
   }
 }
 
@@ -129,22 +131,6 @@ body {
   }
 }
 
-/* Rise-Up Animation */
-@keyframes rise-up {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-rise-up {
-  animation: rise-up 0.6s ease-out forwards;
-}
-
 /* Animation Classes */
 .animate-fade-in-fast {
   animation: fade-in-up 0.6s ease-out forwards;
@@ -154,47 +140,8 @@ body {
   animation: bounce-slow 1.5s infinite;
 }
 
-/* Staggered Animation Delay */
-.animation-delay-0 {
-  animation-delay: 0ms;
-}
 .animation-delay-100 {
   animation-delay: 100ms;
-}
-.animation-delay-200 {
-  animation-delay: 200ms;
-}
-.animation-delay-300 {
-  animation-delay: 300ms;
-}
-.animation-delay-400 {
-  animation-delay: 400ms;
-}
-
-/* Fade-In Animation */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in-slow {
-  animation: fade-in 0.8s ease-out;
-}
-
-/* Slide-In Animations */
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
 }
 
 @keyframes slide-in-right {
@@ -206,10 +153,6 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 0.8s ease-out;
 }
 
 .animate-slide-in-right {
@@ -234,6 +177,12 @@ body {
 /* Animation Class */
 .animate-letter-pop {
   animation: letter-pop 0.6s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
+  animation-delay: var(--delay, 0s);
+  display: inline-block;
+}
+
+.animate-letter-pop-hover {
+  animation: letter-pop-hover 0.6s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
   animation-delay: var(--delay, 0s);
   display: inline-block;
 }

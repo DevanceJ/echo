@@ -21,7 +21,7 @@ export function Header() {
       <Button
         variant="ghost"
         size="icon"
-        className={"h-7 w-7"}
+        className={"h-10 w-10"}
         onClick={() => {
           toggleLeft();
         }}>
@@ -30,11 +30,11 @@ export function Header() {
       </Button>
       <div className="hidden md:flex space-x-2">
         <ChevronLeft
-          size={32}
+          size={24}
           className="text-muted-foreground hover:text-primary cursor-pointer"
         />
         <ChevronRight
-          size={32}
+          size={24}
           className="text-muted-foreground hover:text-primary cursor-pointer"
         />
       </div>
@@ -48,7 +48,7 @@ export function Header() {
       <Button
         variant="ghost"
         size="icon"
-        className={"h-7 w-7"}
+        className="text-xl"
         onClick={() => {
           toggleRight();
         }}>
