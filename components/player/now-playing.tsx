@@ -29,7 +29,7 @@ const SONGS: Song[] = [
   {
     title: "Ghar",
     artist: "Bharat Chauhan",
-    src: "/music/ghar.mp3",
+    src: "/music/Ghar.mp3",
     albumCover: "/images/ghar-album.jpeg",
   },
 ];
@@ -57,7 +57,7 @@ export function NowPlaying() {
         audioRef.current.play();
       }
     }
-  }, [currentSongIndex]);
+  }, [currentSongIndex, isPlaying, currentSong.src]);
 
   const togglePlay = () => {
     if (audioRef.current) {
