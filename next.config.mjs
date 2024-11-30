@@ -1,8 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['i.scdn.co', 'image-cdn-ak.spotifycdn.com'],
-    }
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'i.scdn.co',
+                port: '',
+                search: '',
+            },
+            {
+                protocol: 'https',
+                hostname: '**.spotifycdn.com',
+                port: '',
+                search: '',
+            },
+        ],
+    },
 };
 
 export default nextConfig;

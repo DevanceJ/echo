@@ -2,16 +2,16 @@
 import { Header } from "@/components/console/header";
 import { Album as AlbumComponent } from "@/components/console/album";
 import { PlaylistGrid } from "@/components/console/playlist";
-import { auth } from "@/auth";
 import { useQuery } from "@tanstack/react-query";
 import { Album, UserPlaylists } from "@/types";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { NowPlaying } from "@/components/player/now-playing";
 export default function Home() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/login");
+      redirect("/");
     },
   });
   console.log("from frontend", session);
@@ -73,12 +73,7 @@ export default function Home() {
 
   // Error handling
   if (playlistError || newReleasesError) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen text-red-500">
-        <p>An error occurred while fetching data.</p>
-        <p>{playlistError?.message || newReleasesError?.message}</p>
-      </div>
-    );
+    redirect("/");
   }
   const newReleasesPlaylists = newReleases.albums.items.map((album: Album) => ({
     name: album.name,
@@ -97,9 +92,9 @@ export default function Home() {
   }));
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pb-24">
       <Header />
-      <div className="flex flex-col items-center justify-center px-4 space-y-8">
+      <div className="flex flex-col items-center justify-center px-4 space-y-6">
         <AlbumComponent />
         <PlaylistGrid title="New Releases" playlists={newReleasesPlaylists} />
         <PlaylistGrid title="Your Playlists" playlists={userPlaylists} />

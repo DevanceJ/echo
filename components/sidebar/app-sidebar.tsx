@@ -1,4 +1,11 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+  Download,
+  Home,
+  FileMusic,
+  Compass,
+  Heart,
+  FolderOpen,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -24,12 +31,12 @@ const features = [
   {
     title: "Discover",
     url: "#",
-    icon: Inbox,
+    icon: Compass,
   },
   {
     title: "Collections",
     url: "#",
-    icon: Calendar,
+    icon: FileMusic,
   },
 ];
 
@@ -37,17 +44,17 @@ const library = [
   {
     title: "Downloads",
     url: "#",
-    icon: Search,
+    icon: Download,
   },
   {
     title: "Favorites",
     url: "#",
-    icon: Settings,
+    icon: Heart,
   },
   {
     title: "Local Files",
     url: "#",
-    icon: Settings,
+    icon: FolderOpen,
   },
 ];
 export function AppSidebar() {
