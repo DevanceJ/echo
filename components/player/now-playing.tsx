@@ -57,7 +57,7 @@ export function NowPlaying() {
         audioRef.current.play();
       }
     }
-  }, [currentSongIndex, isPlaying, currentSong.src]);
+  }, [currentSongIndex]);
 
   const togglePlay = () => {
     if (audioRef.current) {
