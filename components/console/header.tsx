@@ -17,7 +17,7 @@ export function Header() {
   const { toggleSidebar: toggleRight } = rightSidebar;
 
   return (
-    <div className="flex items-center px-6 py-3">
+    <div className="flex items-center px-2 mt-6">
       <Button
         variant="ghost"
         size="icon"
@@ -28,7 +28,7 @@ export function Header() {
         <PanelLeft />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
-      <div className="hidden md:flex space-x-2">
+      <div className="hidden md:flex">
         <ChevronLeft
           size={24}
           className="text-muted-foreground hover:text-primary cursor-pointer"
@@ -38,7 +38,7 @@ export function Header() {
           className="text-muted-foreground hover:text-primary cursor-pointer"
         />
       </div>
-      <div className="relative w-full focus:ring-0 focus:ring-offset-0">
+      <div className="relative w-full focus:ring-0 focus:ring-offset-0 mx-2">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search for artists, songs, or albums"

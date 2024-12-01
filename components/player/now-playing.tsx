@@ -134,11 +134,15 @@ export function NowPlaying() {
              transition-transform"
           />
           <div className="hidden md:flex md:flex-col">
-            <Link href={currentSong.songUrl} className="text-sm font-semibold">
+            <Link
+              href={currentSong.songUrl}
+              target="_blank"
+              className="text-sm font-semibold">
               {currentSong.title}
             </Link>
             <Link
               href={currentSong.artistUrl}
+              target="_blank"
               className="text-xs text-muted-foreground">
               {currentSong.artist}
             </Link>

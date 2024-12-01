@@ -59,7 +59,7 @@ export function QueueSidebar() {
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Projects</SidebarGroupLabel>
+            <SidebarGroupLabel>Recently Played</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {Array.from({ length: 5 }).map((_, index) => (

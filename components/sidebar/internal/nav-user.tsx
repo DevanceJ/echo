@@ -48,7 +48,7 @@ export function NavUser({ user }: { user: User | undefined }) {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg bg-[#0c0a09]"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}>
@@ -59,7 +59,9 @@ export function NavUser({ user }: { user: User | undefined }) {
                     src={user?.image ?? undefined}
                     alt={user?.name ?? undefined}
                   />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {user?.name?.charAt(0) ?? "CN"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.name}</span>
