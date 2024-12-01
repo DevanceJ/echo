@@ -20,6 +20,8 @@ import {
   SidebarRail,
 } from "@/components/ui/multisidebar";
 import Link from "next/link";
+import Image from "next/image";
+import echoLogo from "@/public/images/logo.png";
 
 // Features.
 const features = [
@@ -60,12 +62,15 @@ const library = [
 export function AppSidebar() {
   return (
     <Sidebar side="left">
-      <SidebarHeader className="my-6 pl-4 text-2xl font-medium">
-        Echo
-      </SidebarHeader>
+      <Link href="/echo">
+        <SidebarHeader className="p-4 flex-row gap-4 items-center cursor-pointer">
+          <Image src={echoLogo} alt="Echo" width={32} height={32} />
+          <h1 className="font-bold text-2xl">Echo</h1>
+        </SidebarHeader>
+      </Link>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>FEATURES</SidebarGroupLabel>
+          <SidebarGroupLabel>Features</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {features.map((feature) => (
@@ -73,7 +78,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     asChild
                     side="left"
-                    className="data-[active=true]:bg-transparent data-[active=true]:text-blue-600"
+                    className="data-[active=true]:bg-transparent data-[active=true]:text-blue-600 text-gray-400"
                     isActive={feature.title === "Home"}>
                     <Link href={feature.url}>
                       <feature.icon />
@@ -86,12 +91,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>LIBRARY</SidebarGroupLabel>
+          <SidebarGroupLabel>Library</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {library.map((lib) => (
                 <SidebarMenuItem key={lib.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    side="left"
+                    className="text-gray-400">
                     <Link href={lib.url}>
                       <lib.icon />
                       <span>{lib.title}</span>

@@ -7,9 +7,15 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
+  Heart,
+  ListMusic,
+  Mic,
+  Share2Icon,
+  MonitorSmartphone,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Define a type for our songs
 type Song = {
@@ -17,6 +23,8 @@ type Song = {
   artist: string;
   src: string;
   albumCover: string;
+  artistUrl: string;
+  songUrl: string;
 };
 
 const SONGS: Song[] = [
@@ -25,12 +33,16 @@ const SONGS: Song[] = [
     artist: "The Strokes",
     src: "/music/ode.mp3",
     albumCover: "/images/odetothemets.jpeg",
+    artistUrl: "https://open.spotify.com/artist/0epOFNiUfyON9EYx7Tpr6V",
+    songUrl: "https://open.spotify.com/track/1BLOVHYYlH4JUHQGcpt75R",
   },
   {
     title: "Ghar",
     artist: "Bharat Chauhan",
     src: "/music/Ghar.mp3",
     albumCover: "/images/ghar-album.jpeg",
+    artistUrl: "https://open.spotify.com/artist/2sSTjTnRtGa3KrEjMoMaAe",
+    songUrl: "https://open.spotify.com/track/3zZ4VnqnGURgm5fYRLy4JV",
   },
 ];
 
@@ -111,7 +123,7 @@ export function NowPlaying() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background/90 backdrop-blur-sm border-t border-border shadow-lg">
-      <div className=" mx-auto grid grid-cols-3 md:grid-cols-3 items-center md:gap-4 p-2.5">
+      <div className="mx-auto grid grid-cols-3 md:grid-cols-3 items-center md:gap-4 p-2.5">
         <div className="flex items-center space-x-4">
           <Image
             src={currentSong.albumCover}
@@ -121,12 +133,18 @@ export function NowPlaying() {
             className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shadow-md hover:scale-105
              transition-transform"
           />
-          <div className="hidden md:block">
-            <h3 className="text-sm font-semibold">{currentSong.title}</h3>
-            <p className="text-xs text-muted-foreground">
+          <div className="hidden md:flex md:flex-col">
+            <Link href={currentSong.songUrl} className="text-sm font-semibold">
+              {currentSong.title}
+            </Link>
+            <Link
+              href={currentSong.artistUrl}
+              className="text-xs text-muted-foreground">
               {currentSong.artist}
-            </p>
+            </Link>
           </div>
+          <Heart className="h-5 w-5 cursor-pointer hover:scale-105 hover:fill-red-600 hover:text-red-600 transition-all duration-200" />
+          <ListMusic className="h-5 w-5 cursor-pointer hover:scale-105 transition-all duration-200" />
         </div>
 
         <div className="flex flex-col items-center space-y-2">
@@ -174,7 +192,7 @@ export function NowPlaying() {
           </div>
         </div>
 
-        <div className="flex items-center justify-end space-x-2">
+        <div className="flex items-center justify-end space-x-2 md:pr-4">
           <Button
             variant="ghost"
             size="icon"
@@ -193,6 +211,9 @@ export function NowPlaying() {
             onValueChange={(value) => setVolume(value[0])}
             className="w-24 hidden md:flex"
           />
+          <Mic className="h-5 w-5 cursor-pointer hover:scale-105 transition-all duration-200" />
+          <MonitorSmartphone className="h-5 w-5 cursor-pointer hover:scale-105 transition-all duration-200" />
+          <Share2Icon className="h-5 w-5 cursor-pointer hover:scale-105 transition-all duration-200" />
         </div>
 
         <audio

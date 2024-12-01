@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import authImage from "@/public/images/auth.jpg";
 import { SignIn } from "@/components/auth/sign-in";
 
 export default function AuthPage() {
@@ -7,7 +7,7 @@ export default function AuthPage() {
     <div className="fixed inset-0 flex overflow-hidden lg:overflow-auto">
       <div className="hidden w-1/2 lg:block">
         <Image
-          src="/images/auth.jpg"
+          src={authImage}
           alt="Authentication background"
           width={1080}
           height={1080}

@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { PlayCircle } from "lucide-react";
+import beatles from "@/public/images/beatles.png";
 
 function wrapTextWithSpans(text: string, baseClass: string) {
   return text.split("").map((char, index) => (
@@ -16,9 +17,9 @@ function wrapTextWithSpans(text: string, baseClass: string) {
 }
 export function Album() {
   return (
-    <Card className="w-full max-w-5xl bg-gradient-to-r from-pink-400 to-pink-600 overflow-hidden shadow-2xl">
+    <Card className="w-full max-w-5xl bg-gradient-to-r from-pink-400 to-pink-600 overflow-hidden shadow-2xl mt-6">
       <CardContent className="flex flex-wrap gap-4 items-center justify-evenly p-6">
-        <div className="space-y-4">
+        <div className="space-y-2">
           <h3 className="text-sm uppercase font-semibold text-blue-950 tracking-widest ">
             {wrapTextWithSpans("Not New Album", "animate-letter-pop")}
           </h3>
@@ -36,7 +37,7 @@ export function Album() {
           </Button>
         </div>
         <Image
-          src="/images/beatles.avif"
+          src={beatles}
           alt="Album Cover"
           width={400}
           height={500}
