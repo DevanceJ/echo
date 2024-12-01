@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -15,45 +16,15 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
-type Song = {
-  title: string;
-  artist: string;
-  src: string;
-  albumCover: string;
-  artistUrl: string;
-  songUrl: string;
-};
-
-const SONGS: Song[] = [
-  {
-    title: "Ode To The Mets",
-    artist: "The Strokes",
-    src: "/music/ode.mp3",
-    albumCover: "/images/odetothemets.jpeg",
-    artistUrl: "https://open.spotify.com/artist/0epOFNiUfyON9EYx7Tpr6V",
-    songUrl: "https://open.spotify.com/track/1BLOVHYYlH4JUHQGcpt75R",
-  },
-  {
-    title: "Ghar",
-    artist: "Bharat Chauhan",
-    src: "/music/Ghar.mp3",
-    albumCover: "/images/ghar-album.jpeg",
-    artistUrl: "https://open.spotify.com/artist/2sSTjTnRtGa3KrEjMoMaAe",
-    songUrl: "https://open.spotify.com/track/3zZ4VnqnGURgm5fYRLy4JV",
-  },
-];
+import { useCurrentSongStore } from "@/hooks/useStore";
 
 export function NowPlaying() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { currentSong } = useCurrentSongStore();
+  const [isPlaying, setIsPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  const currentSong = SONGS[currentSongIndex];
 
   useEffect(() => {
     if (audioRef.current) {
@@ -62,14 +33,13 @@ export function NowPlaying() {
   }, [volume]);
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && currentSong.src) {
       audioRef.current.src = currentSong.src;
       if (isPlaying) {
         audioRef.current.play();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSongIndex]);
+  }, [currentSong.src]);
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -102,7 +72,8 @@ export function NowPlaying() {
     }
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}
+`;
   };
 
   const toggleMute = () => {
@@ -111,41 +82,33 @@ export function NowPlaying() {
       setVolume(audioRef.current.muted ? 0 : 1);
     }
   };
-  const handleNextSong = () => {
-    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % SONGS.length);
-  };
-
-  const handlePrevSong = () => {
-    setCurrentSongIndex(
-      (prevIndex) => (prevIndex - 1 + SONGS.length) % SONGS.length
-    );
-  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background/90 backdrop-blur-sm border-t border-border shadow-lg">
       <div className="mx-auto grid grid-cols-3 md:grid-cols-3 items-center md:gap-4 p-2.5">
         <div className="flex items-center space-x-4">
-          <Image
-            src={currentSong.albumCover}
-            alt="Album cover"
-            width={56}
-            height={56}
-            className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shadow-md hover:scale-105
+          {!currentSong.album_cover ? (
+            <div
+              className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shadow-md hover:scale-105
              transition-transform"
-          />
+            />
+          ) : (
+            <Image
+              src={currentSong.album_cover}
+              alt="Album cover"
+              width={56}
+              height={56}
+              className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shadow-md hover:scale-105
+               transition-transform"
+            />
+          )}
           <div className="hidden md:flex md:flex-col">
-            <Link
-              href={currentSong.songUrl}
-              target="_blank"
-              className="text-sm font-semibold">
-              {currentSong.title}
-            </Link>
-            <Link
-              href={currentSong.artistUrl}
-              target="_blank"
-              className="text-xs text-muted-foreground">
-              {currentSong.artist}
-            </Link>
+            <div className="text-sm font-semibold">
+              {currentSong.name ? currentSong.name : ""}
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {currentSong.artist ? currentSong.artist : ""}
+            </div>
           </div>
           <Heart className="h-5 w-5 cursor-pointer hover:scale-105 hover:fill-red-600 hover:text-red-600 transition-all duration-200" />
           <ListMusic className="h-5 w-5 cursor-pointer hover:scale-105 transition-all duration-200" />
@@ -156,13 +119,13 @@ export function NowPlaying() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={handlePrevSong}
               className="hover:bg-accent/20 transition-colors">
               <SkipBack className="h-5 w-5 md:h-6 md:w-6" />
             </Button>
             <Button
               onClick={togglePlay}
               variant="ghost"
+              disabled={!currentSong.src}
               size="icon"
               className="bg-primary/10 hover:bg-primary/20 rounded-full p-2 transition-colors">
               {isPlaying ? (
@@ -174,7 +137,6 @@ export function NowPlaying() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={handleNextSong}
               className="hover:bg-accent/20 transition-colors">
               <SkipForward className="h-5 w-5 md:h-6 md:w-6" />
             </Button>
@@ -182,16 +144,17 @@ export function NowPlaying() {
 
           <div className="flex items-center space-x-2 w-full">
             <span className="text-xs w-10 text-right tabular-nums">
-              {formatTime(currentTime)}
+              {currentTime ? formatTime(currentTime) : "0:00"}
             </span>
             <Slider
               value={[currentTime]}
+              disabled={!currentSong.src}
               max={duration || 1}
               step={1}
               onValueChange={handleSeek}
             />
             <span className="text-xs w-10 tabular-nums">
-              {formatTime(duration)}
+              {duration ? formatTime(duration) : "0:00"}
             </span>
           </div>
         </div>
@@ -201,6 +164,7 @@ export function NowPlaying() {
             variant="ghost"
             size="icon"
             onClick={toggleMute}
+            disabled={!currentSong.src}
             className="hover:bg-accent/20 transition-colors">
             {volume === 0 ? (
               <VolumeX className="h-5 w-5" />
@@ -212,6 +176,7 @@ export function NowPlaying() {
             value={[volume]}
             max={1}
             step={0.01}
+            disabled={!currentSong.src}
             onValueChange={(value) => setVolume(value[0])}
             className="w-24 hidden md:flex"
           />

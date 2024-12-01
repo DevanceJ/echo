@@ -11,43 +11,41 @@ import {
   SidebarMenuSkeleton,
   SidebarRail,
 } from "@/components/ui/multisidebar";
-import { useQuery } from "@tanstack/react-query";
 import { NavUser } from "./internal/nav-user";
 import { useSession } from "next-auth/react";
 import { NavSong } from "./internal/nav-song";
-import React from "react";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { useSongsStore } from "@/hooks/useStore";
 
 export function QueueSidebar() {
+  const { setSongs } = useSongsStore();
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect("/");
     },
   });
-  const {
-    data: recentlyPlayed,
-    error: recentlyPlayedError,
-    isLoading: recentlyPlayedLoading,
-  } = useQuery({
-    queryKey: ["recently-played"],
-    queryFn: async () => {
-      if (!session?.access_token) {
-        throw new Error("No access token available");
+
+  const supabase = createClient();
+  const [songsLoading, setSongsLoading] = useState(true);
+  useEffect(() => {
+    const fetchRecentlyPlayed = async () => {
+      const { data, error } = await supabase.from("Song").select("*");
+      if (error) {
+        console.error("error", error);
       }
-      const res = await fetch("https://api.spotify.com/v1/me/top/tracks", {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to fetch recently played");
+      console.log(data);
+      if (data) {
+        setSongs(data);
       }
-      return res.json();
-    },
-    enabled: !!session?.access_token,
-  });
-  if (status === "loading" || recentlyPlayedLoading || recentlyPlayedError) {
+      setSongsLoading(false);
+    };
+    fetchRecentlyPlayed();
+  }, [supabase]);
+
+  if (status === "loading" || songsLoading) {
     return (
       <Sidebar side="right">
         <SidebarHeader>
@@ -59,7 +57,7 @@ export function QueueSidebar() {
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Recently Played</SidebarGroupLabel>
+            <SidebarGroupLabel>Jukebox</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {Array.from({ length: 5 }).map((_, index) => (
@@ -80,7 +78,7 @@ export function QueueSidebar() {
         <NavUser user={session?.user} />
       </SidebarHeader>
       <SidebarContent className="mt-4 pb-24">
-        <NavSong recentlyPlayed={recentlyPlayed.items} />
+        <NavSong />
       </SidebarContent>
       <SidebarRail side="right" />
     </Sidebar>

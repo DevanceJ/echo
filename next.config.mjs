@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
+        domains: [
+            'hmbvniosirxtuiewcspp.supabase.co', '**.supabase.co',
+        ],
         remotePatterns: [
             {
                 protocol: 'https',
@@ -14,6 +17,18 @@ const nextConfig = {
                 port: '',
                 search: '',
             },
+            {
+                protocol: 'https',
+                hostname: '**.supabase.co',
+                port: '',
+                search: '',
+            },
+            {
+                protocol: 'https',
+                hostname: 'hmbvniosirxtuiewcspp.supabase.co',
+                port: '',
+                search: '',
+            }
         ],
     },
 };
