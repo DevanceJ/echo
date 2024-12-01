@@ -49,13 +49,21 @@ Echo is a music dashboard powered by Spotify Web API.
    ```
 
 3. Set up environment variables
-   Create a `.env.local` file in the root directory with the following:
+   Create a `.env` file in the root directory with the following:
 
    ```
    SPOTIFY_CLIENT_ID=your_spotify_client_id
    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
    NEXTAUTH_SECRET=your_nextauth_secret
    ```
+
+   AUTH_SECRET
+
+   ```bash
+   npx auth secret
+   ```
+
+   SPOTIFY: Go to [https://developer.spotify.com/documentation/web-api](https://developer.spotify.com/documentation/web-api)
 
 4. Run the development server
 
