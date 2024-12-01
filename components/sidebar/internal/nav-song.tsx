@@ -20,12 +20,8 @@ export function NavSong({ recentlyPlayed }: any) {
     <SidebarGroup>
       <SidebarGroupLabel className="">Recently Played</SidebarGroupLabel>
       {recentlyPlayed.length > 8 && (
-        <SidebarGroupAction className="">
-          {showAll ? (
-            <Minus onClick={() => setShowAll(false)} />
-          ) : (
-            <Plus onClick={() => setShowAll(true)} />
-          )}
+        <SidebarGroupAction onClick={() => setShowAll(!showAll)}>
+          {showAll ? <Minus /> : <Plus />}
         </SidebarGroupAction>
       )}
       <SidebarGroupContent>
