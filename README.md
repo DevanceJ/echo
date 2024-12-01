@@ -7,6 +7,10 @@ Echo is a music dashboard powered by Spotify Web API.
 ## 🚀 Features
 
 - **Spotify Authentication**: Secure login using Spotify credentials
+- **Spotify Insights**:
+  - Recently Played Tracks
+  - Personal Album Library
+  - Latest Releases
 - **Responsive Design**: Fully responsive layout that works across devices
 - **Modern UI**: Clean, intuitive user interface
 
@@ -76,3 +80,7 @@ The application is fully responsive and provides an optimal viewing experience a
 - Mobile devices
 - Tablets
 - Desktop computers
+
+---
+
+**Disclaimer**: No data is stored beyond the current session.
