@@ -4,9 +4,6 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
-  if (pathname === "/" && isLoggedIn) {
-    return NextResponse.redirect(new URL("/echo", req.nextUrl));
-  }
   if (pathname.startsWith("/echo") && !isLoggedIn) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { BellDot, ChevronsUpDown, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -32,7 +32,9 @@ export function NavUser({ user }: { user: User | undefined }) {
             <SidebarMenuButton
               side="right"
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground
+              focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent
+              ">
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
                   src={user?.image ?? undefined}
