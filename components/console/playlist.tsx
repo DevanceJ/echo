@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import clsx from "clsx";
+import { useIsMd } from "@/hooks/use-mobile";
 
 type Playlist = {
   name: string;
@@ -24,8 +25,11 @@ export function PlaylistGrid({
   playlists,
 }: PlaylistGridProps) {
   const [showAll, setShowAll] = useState(false);
+  const isMd = useIsMd();
 
-  const visiblePlaylists = showAll ? playlists : playlists.slice(0, 5);
+  const visiblePlaylists = showAll
+    ? playlists
+    : playlists.slice(0, isMd ? 6 : 5);
 
   return (
     <div className="w-full">

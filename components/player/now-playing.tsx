@@ -17,7 +17,6 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Define a type for our songs
 type Song = {
   title: string;
   artist: string;
@@ -69,6 +68,7 @@ export function NowPlaying() {
         audioRef.current.play();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSongIndex]);
 
   const togglePlay = () => {
